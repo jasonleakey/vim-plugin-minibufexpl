@@ -611,7 +611,7 @@ function! <SID>StartExplorer(curBufNum)
   call s:SwitchWindow('w',0,l:winNum)
 
   " Make sure we are in our window
-  if bufname('%') != '-MiniBufExplorer-'
+  if !s:IsOwnWindow()
     call <SID>DEBUG('StartExplorer called in invalid window',1)
     call <SID>DEBUG('Leaving StartExplorer()',10)
     return
@@ -1091,7 +1091,7 @@ function! <SID>DisplayBuffers(curBufNum)
   call <SID>DEBUG('Entering DisplayExplorer('.a:curBufNum.')',10)
 
   " Make sure we are in our window
-  if bufname('%') != '-MiniBufExplorer-'
+  if !s:IsOwnWindow()
     call <SID>DEBUG('DisplayBuffers called in invalid window',1)
     return
   endif
@@ -1121,7 +1121,7 @@ function! <SID>ResizeWindow()
   call <SID>DEBUG('Entering ResizeWindow()',10)
 
   " Make sure we are in our window
-  if bufname('%') != '-MiniBufExplorer-'
+  if !s:IsOwnWindow()
     call <SID>DEBUG('ResizeWindow called in invalid window',1)
     call <SID>DEBUG('Leaving ResizeWindow()',10)
     return
@@ -1241,7 +1241,7 @@ function! <SID>ShowBuffers()
   call <SID>DEBUG('Entering ShowExplorer()',10)
 
   " Make sure we are in our window
-  if bufname('%') != '-MiniBufExplorer-'
+  if !s:IsOwnWindow()
     call <SID>DEBUG('ShowBuffers called in invalid window',1)
     call <SID>DEBUG('Leaving ShowBuffers()',10)
     return
@@ -2186,7 +2186,7 @@ function! <SID>GetSelectedBuffer()
   call <SID>DEBUG('Entering GetSelectedBuffer()',10)
 
   " Make sure we are in our window
-  if bufname('%') != '-MiniBufExplorer-'
+  if !s:IsOwnWindow()
     call <SID>DEBUG('GetSelectedBuffer called in invalid window',1)
     call <SID>DEBUG('Leaving GetSelectedBuffer()',10)
     return -1
@@ -2226,7 +2226,7 @@ function! <SID>MBESelectBuffer(split)
   call <SID>DEBUG('Entering MBESelectBuffer()',10)
 
   " Make sure we are in our window
-  if bufname('%') != '-MiniBufExplorer-'
+  if !s:IsOwnWindow()
     call <SID>DEBUG('MBESelectBuffer called in invalid window',1)
     call <SID>DEBUG('Leaving MBESelectBuffer()',10)
     return
@@ -2283,7 +2283,7 @@ function! <SID>MBEDeleteBuffer()
   call <SID>DEBUG('Entering MBEDeleteBuffer()',10)
 
   " Make sure we are in our window
-  if bufname('%') != '-MiniBufExplorer-'
+  if !s:IsOwnWindow()
     call <SID>DEBUG('MBEDeleteBuffer called in invalid window',1)
     call <SID>DEBUG('Leaving MBEDeleteBuffer()',10)
     return
@@ -2495,5 +2495,9 @@ function! s:SwitchWindow(action, ...)
 endfunction
 
 " }}}
+
+function! s:IsOwnWindow()
+  return bufname('%') =~ '-MiniBufExplorer-' && &buftype == 'nofile'
+endfunction
 
 " vim:ft=vim:fdm=marker:ff=unix:nowrap:tabstop=2:shiftwidth=2:softtabstop=2:smarttab:shiftround:expandtab
